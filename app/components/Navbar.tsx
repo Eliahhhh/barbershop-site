@@ -8,6 +8,8 @@ const navLinks = [
   { label: "Services", href: "/#services" },
   { label: "Hours", href: "/#hours" },
   { label: "Gallery", href: "/gallery" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function PhoneIcon() {
@@ -61,7 +63,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-4 md:flex" aria-label="Main">
           {navLinks.map((l) => (
             <Link
               key={l.href}
