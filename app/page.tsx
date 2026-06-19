@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import BookingBanner from "./components/BookingBanner";
+import ScrollReveal from "./components/ScrollReveal";
 
 const services = [
   { name: "Regular Haircut", price: "$35" },
@@ -133,6 +134,7 @@ export default function Home() {
 
       {/* ── Services ── */}
       <section id="services" className="scroll-mt-14 bg-black px-4 py-20 sm:px-6 lg:px-8">
+        <ScrollReveal>
         <div className="mx-auto max-w-3xl">
           <h2 className="font-heading text-center text-4xl font-bold uppercase tracking-widest text-amber-400 sm:text-5xl">
             Services
@@ -158,12 +160,14 @@ export default function Home() {
             ))}
           </ul>
         </div>
+        </ScrollReveal>
       </section>
 
       <BarberStripe />
 
       {/* ── Hours & Location ── */}
       <section id="hours" className="scroll-mt-14 bg-zinc-950 px-4 py-20 sm:px-6 lg:px-8">
+        <ScrollReveal>
         <div className="mx-auto max-w-3xl">
           <div className="grid gap-14 lg:grid-cols-2">
             {/* Hours */}
@@ -223,6 +227,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* ── Footer ── */}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "../components/Navbar";
+import ScrollReveal from "../components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Gallery | Fade District Barber Shop",
@@ -57,6 +58,7 @@ export default function GalleryPage() {
             Shop photos coming soon — check back shortly.
           </p>
 
+          <ScrollReveal>
           <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <li
@@ -70,6 +72,7 @@ export default function GalleryPage() {
               </li>
             ))}
           </ul>
+          </ScrollReveal>
         </div>
       </main>
 

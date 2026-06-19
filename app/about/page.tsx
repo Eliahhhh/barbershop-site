@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "../components/Navbar";
+import ScrollReveal from "../components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About | Fade District Barber Shop",
@@ -59,6 +60,7 @@ export default function AboutPage() {
           </div>
 
           {/* Meet the barbers */}
+          <ScrollReveal>
           <h2 className="text-center font-heading text-3xl font-bold uppercase tracking-widest text-amber-400 sm:text-4xl">
             Meet the Barbers
           </h2>
@@ -87,6 +89,7 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
+          </ScrollReveal>
         </div>
       </main>
 
