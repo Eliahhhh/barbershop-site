@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Navbar from "./components/Navbar";
 import BookingBanner from "./components/BookingBanner";
 import ScrollReveal from "./components/ScrollReveal";
@@ -38,12 +39,15 @@ export default function Home() {
           <BarberStripe />
         </div>
 
-        {/* FD badge */}
-        <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full border-2 border-amber-400">
-          <span className="font-heading text-3xl font-bold tracking-tight text-amber-400">
-            FD
-          </span>
-        </div>
+        {/* Logo */}
+        <Image
+          src="/logo.png"
+          alt="Fade District logo"
+          height={120}
+          width={120}
+          className="mb-8"
+          priority
+        />
 
         <h1 className="font-heading text-6xl font-bold uppercase tracking-widest text-amber-400 sm:text-7xl lg:text-8xl">
           Fade District
@@ -226,6 +230,89 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+        </ScrollReveal>
+      </section>
+
+      <BarberStripe />
+
+      {/* ── Reviews ── */}
+      <section className="bg-zinc-950 px-4 py-20 sm:px-6 lg:px-8">
+        <ScrollReveal>
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="font-heading text-4xl font-bold uppercase tracking-widest text-amber-400 sm:text-5xl">
+            What Our Clients Say
+          </h2>
+          <div className="mx-auto mt-3 h-0.5 w-14 bg-amber-400" />
+
+          {/*
+           * ── SWAP THIS BLOCK when real reviews are available ──────────────
+           * Replace the placeholder below with a grid of review cards, e.g.:
+           *
+           * <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+           *   {reviews.map((r) => (
+           *     <li key={r.name} className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-left">
+           *       <div className="flex gap-0.5 text-amber-400">
+           *         {Array.from({ length: r.stars }).map((_, i) => <StarIcon key={i} filled />)}
+           *       </div>
+           *       <p className="mt-3 text-sm leading-relaxed text-zinc-300">"{r.quote}"</p>
+           *       <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">{r.name}</p>
+           *     </li>
+           *   ))}
+           * </ul>
+           *
+           * ── PLACEHOLDER STATE (remove once reviews exist) ────────────────
+           */}
+          <div className="mt-10 flex flex-col items-center gap-5">
+            {/* Outline star — not filled because there are no ratings yet */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.25}
+              className="h-14 w-14 text-amber-400/60"
+              aria-hidden
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+              />
+            </svg>
+
+            <div>
+              <p className="text-lg font-medium text-white">
+                We just opened our doors.
+              </p>
+              <p className="mt-1 text-sm text-zinc-400">
+                Be one of our first reviews and help us grow!
+              </p>
+            </div>
+
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Fade+District+Barber+Shop+422+W+8th+Ave+Vancouver+BC"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-7 py-2.5 font-heading text-sm font-semibold uppercase tracking-wider text-black transition-colors hover:bg-amber-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-4 w-4 shrink-0"
+                aria-hidden
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Leave Us a Review
+            </a>
+          </div>
+          {/* ── END SWAP BLOCK ─────────────────────────────────────────────── */}
         </div>
         </ScrollReveal>
       </section>

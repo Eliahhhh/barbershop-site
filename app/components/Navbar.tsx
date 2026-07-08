@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const navLinks = [
@@ -38,25 +39,14 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3" aria-label="Fade District — home">
-          <span className="flex h-9 w-9 overflow-hidden rounded-full border border-amber-400">
-            <svg viewBox="0 0 100 100" className="h-full w-full" aria-hidden>
-              <circle cx="50" cy="50" r="50" fill="#000"/>
-              <line x1="67" y1="13" x2="33" y2="87"
-                    stroke="#FBBF24" strokeWidth="14" strokeLinecap="butt"/>
-              <text x="25" y="50"
-                    fontFamily="Impact,'Arial Narrow',Arial,sans-serif"
-                    fontSize="40" fontWeight="900"
-                    fill="#FBBF24"
-                    textAnchor="middle"
-                    dominantBaseline="central">F</text>
-              <text x="75" y="50"
-                    fontFamily="Impact,'Arial Narrow',Arial,sans-serif"
-                    fontSize="40" fontWeight="900"
-                    fill="#FBBF24"
-                    textAnchor="middle"
-                    dominantBaseline="central">D</text>
-            </svg>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Fade District logo"
+            height={44}
+            width={44}
+            className="h-11 w-auto"
+            priority
+          />
           <span className="hidden font-heading text-base font-bold uppercase tracking-widest text-white sm:block">
             Fade District
           </span>

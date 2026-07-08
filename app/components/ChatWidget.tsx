@@ -2,7 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const GREETING = "Hey! Ask me anything about our services, hours, or how to book. 💈";
+const GREETING =
+  "Hey! Ask me anything about our services, hours, or how to book. 💈";
+
+const SUGGESTIONS = [
+  "What are your hours?",
+  "How much for a haircut?",
+  "What should I get?",
+  "How do I book?",
+];
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -24,7 +32,7 @@ function ChatBubbleIcon() {
   );
 }
 
-function XIcon() {
+function XIcon({ size = 5 }: { size?: number }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -32,10 +40,14 @@ function XIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth={2}
-      className="h-5 w-5"
+      className={`h-${size} w-${size}`}
       aria-hidden
     >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 18 18 6M6 6l12 12"
+      />
     </svg>
   );
 }
@@ -54,6 +66,16 @@ function SendIcon() {
   );
 }
 
+function renderContent(text: string): React.ReactNode[] {
+  return text.split(/(\*\*[^*]+\*\*|\n)/).map((part, i) => {
+    if (part === "\n") return <br key={i} />;
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return part;
+  });
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -63,6 +85,10 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // True only while it's just the initial greeting — no user messages yet
+  const showSuggestions =
+    messages.length === 1 && messages[0].role === "assistant";
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -75,18 +101,18 @@ export default function ChatWidget() {
     }
   }, [open]);
 
-  async function sendMessage() {
-    const text = input.trim();
+  async function sendMessage(quickText?: string) {
+    const text = (quickText ?? input).trim();
     if (!text || loading) return;
 
+    setInput("");
     const userMsg: Message = { role: "user", content: text };
     const newHistory = [...messages, userMsg];
     setMessages(newHistory);
-    setInput("");
     setLoading(true);
 
     try {
-      // Strip leading assistant greeting before sending to API
+      // Exclude the leading assistant greeting from the API call
       const apiMessages = newHistory.filter(
         (_, i) => !(i === 0 && newHistory[0].role === "assistant"),
       );
@@ -142,9 +168,13 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* ── Chat panel ── */}
+      {/* ── Chat panel ──
+          Mobile:  bottom-40 (160px) — clears the full-width Booksy banner
+          sm+:     bottom-[86px]     — sits snug above the toggle button
+          z-[60] keeps both panel and button above the Booksy banner (z-50)
+      */}
       <div
-        className={`fixed bottom-[86px] left-4 z-40 w-80 max-w-[calc(100vw-2rem)] origin-bottom-left overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl transition-all duration-200 ${
+        className={`fixed bottom-40 left-4 z-[60] w-80 max-w-[calc(100vw-2rem)] origin-bottom-left overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl transition-all duration-200 sm:bottom-[86px] ${
           open
             ? "scale-100 opacity-100"
             : "pointer-events-none scale-95 opacity-0"
@@ -165,31 +195,32 @@ export default function ChatWidget() {
             aria-label="Close chat"
             className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-white"
           >
-            <XIcon />
+            <XIcon size={4} />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex h-64 flex-col gap-3 overflow-y-auto px-4 py-4">
+        <div className="flex h-60 flex-col gap-3 overflow-y-auto px-4 py-4">
           {messages.map((m, i) =>
             m.role === "user" ? (
               <div key={i} className="flex justify-end">
-                <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-amber-400 px-3 py-2 text-sm font-medium text-black">
+                <div className="max-w-[85%] break-words rounded-2xl rounded-br-sm bg-amber-400 px-3 py-2 text-sm font-medium text-black">
                   {m.content}
                 </div>
               </div>
             ) : (
               <div key={i} className="flex justify-start">
-                <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-zinc-700 px-3 py-2 text-sm leading-relaxed text-white">
-                  {m.content}
+                <div className="max-w-[85%] break-words rounded-2xl rounded-bl-sm bg-zinc-700 px-3 py-2 text-sm leading-relaxed text-white">
+                  {renderContent(m.content)}
                 </div>
               </div>
             ),
           )}
 
+          {/* Typing indicator */}
           {loading && (
             <div className="flex justify-start">
-              <div className="flex gap-1 rounded-2xl rounded-bl-sm bg-zinc-700 px-4 py-3">
+              <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-zinc-700 px-4 py-3">
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.3s]" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.15s]" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400" />
@@ -199,6 +230,23 @@ export default function ChatWidget() {
 
           <div ref={bottomRef} />
         </div>
+
+        {/* Quick-reply suggestions — shown only before the first user message */}
+        {showSuggestions && (
+          <div className="border-t border-zinc-800 px-3 pb-2 pt-2.5">
+            <div className="grid grid-cols-2 gap-1.5">
+              {SUGGESTIONS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => sendMessage(s)}
+                  className="rounded-lg border border-amber-400/30 bg-amber-400/10 px-2 py-1.5 text-left text-xs leading-snug text-amber-300 transition-colors hover:bg-amber-400/20 active:bg-amber-400/30"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Input */}
         <div className="border-t border-zinc-700 p-3">
@@ -230,20 +278,20 @@ export default function ChatWidget() {
         </div>
       </div>
 
-      {/* ── Toggle button ── */}
+      {/* ── Toggle button ── z-[60] keeps it above the Booksy banner (z-50) */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Chat with us"}
         aria-expanded={open}
-        className="fixed bottom-6 left-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-amber-400 text-black shadow-lg transition-all duration-200 hover:bg-amber-300 hover:scale-105"
+        className="fixed bottom-6 left-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-amber-400 text-black shadow-lg transition-all duration-200 hover:scale-105 hover:bg-amber-300"
       >
         <span
-          className={`absolute transition-all duration-200 ${open ? "rotate-90 opacity-100 scale-100" : "rotate-0 opacity-0 scale-50"}`}
+          className={`absolute transition-all duration-200 ${open ? "scale-100 rotate-0 opacity-100" : "scale-50 rotate-90 opacity-0"}`}
         >
-          <XIcon />
+          <XIcon size={5} />
         </span>
         <span
-          className={`absolute transition-all duration-200 ${open ? "rotate-90 opacity-0 scale-50" : "rotate-0 opacity-100 scale-100"}`}
+          className={`absolute transition-all duration-200 ${open ? "scale-50 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"}`}
         >
           <ChatBubbleIcon />
         </span>
