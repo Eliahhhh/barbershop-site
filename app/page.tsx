@@ -45,7 +45,7 @@ export default function Home() {
           alt="Fade District logo"
           height={120}
           width={120}
-          className="mb-8"
+          className="mb-8 mix-blend-screen"
           priority
         />
 

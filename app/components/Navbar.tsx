@@ -44,7 +44,7 @@ export default function Navbar() {
             alt="Fade District logo"
             height={44}
             width={44}
-            className="h-11 w-auto"
+            className="h-11 w-auto mix-blend-screen"
             priority
           />
           <span className="hidden font-heading text-base font-bold uppercase tracking-widest text-white sm:block">
